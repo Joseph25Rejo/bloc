@@ -2,10 +2,6 @@ const express = require('express');
 const router = express.Router();
 const Caller = require('../models/Caller');
 
-/**
- * @route   POST /api/callers
- * @desc    Create a new caller
- */
 router.post('/', async (req, res, next) => {
     try {
         const caller = new Caller(req.body);
@@ -25,11 +21,6 @@ router.post('/', async (req, res, next) => {
         next(error);
     }
 });
-
-/**
- * @route   GET /api/callers
- * @desc    Get all callers
- */
 router.get('/', async (req, res, next) => {
     try {
         const callers = await Caller.find({});
@@ -43,11 +34,6 @@ router.get('/', async (req, res, next) => {
         next(error);
     }
 });
-
-/**
- * @route   PUT /api/callers/:id
- * @desc    Update a caller by ID
- */
 router.put('/:id', async (req, res, next) => {
     try {
         const caller = await Caller.findByIdAndUpdate(
@@ -66,6 +52,30 @@ router.put('/:id', async (req, res, next) => {
         res.status(200).json({
             success: true,
             data: caller,
+        });
+    } catch (error) {
+        next(error);
+    }
+});
+
+/**
+ * @route   DELETE /api/callers/:id
+ * @desc    Delete a caller by ID
+ */
+router.delete('/:id', async (req, res, next) => {
+    try {
+        const caller = await Caller.findByIdAndDelete(req.params.id);
+
+        if (!caller) {
+            return res.status(404).json({
+                success: false,
+                message: 'Caller not found',
+            });
+        }
+
+        res.status(200).json({
+            success: true,
+            message: 'Caller deleted successfully',
         });
     } catch (error) {
         next(error);

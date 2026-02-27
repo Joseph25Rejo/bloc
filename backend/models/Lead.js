@@ -25,6 +25,11 @@ const leadSchema = new mongoose.Schema({
         type: String,
         trim: true,
     },
+    status: {
+        type: String,
+        enum: ['pending', 'calling', 'completed', 'no-answer', 'failed'],
+        default: 'pending',
+    },
     assignedCallerId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Caller',
